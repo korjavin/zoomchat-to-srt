@@ -7,7 +7,7 @@ import (
 	"regexp"
 )
 
-var re = regexp.MustCompile(`^\d+:\d+:\d+\s`)
+var re = regexp.MustCompile(`^(.+):\s`)
 
 func main() {
 	if len(os.Args) < 3 {
