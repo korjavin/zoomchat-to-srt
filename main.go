@@ -92,6 +92,23 @@ func main() {
 		lineNumber++
 		timestamp, text = parts[0], parts[1]
 	}
+	// last one
+	if lineNumber > 0 {
+		tsPrev, err := time.Parse(timeFormat, timestamp)
+		if err != nil {
+			log.Fatalf("[ERROR] Can't parse time:%s %v", timestamp, err)
+		}
+		cleanedLine := fmt.Sprintf("%d\n%s --> %s\n%s\n",
+			lineNumber,
+			tsPrev.Add(-shiftDuration).Format(timeOutput),
+			tsPrev.Add(-shiftDuration).Add(maxTime).Format(timeOutput),
+			fmt.Sprintf("%s\n", text),
+		)
+		_, err = writer.WriteString(cleanedLine)
+		if err != nil {
+			log.Printf("[ERROR] Can't write to outfile: %v", err)
+		}
+	}
 	if scanner.Err() != nil {
 		log.Fatalf("Can't finish file reading: %v", err)
 	}
